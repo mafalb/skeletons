@@ -48,6 +48,9 @@ jobs:
       - name: install shellcheck
         run: sudo apt-get install shellcheck
 
+      - name: install ansible-lint
+        run: pip install ansible-lint
+
       - name: create a new collection
         run: |
           cd ../
