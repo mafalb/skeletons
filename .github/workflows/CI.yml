@@ -55,10 +55,10 @@ jobs:
 
       - name: lint
         run: |
-          cd mafalb/ci
+          cd ci
           ansible-lint -x galaxy[version-incorrect],galaxy[tags]
 
       - name: sanity
         run: |
-          cd mafalb/ci
+          cd ci
           ansible-test sanity
