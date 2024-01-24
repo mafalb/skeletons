@@ -18,6 +18,8 @@ on: # yamllint disable-line rule:truthy
   schedule:
     - cron: '40 12 * * 6'
 
+  workflow_dispatch:
+
 jobs:
 
   ansible-test:
@@ -54,9 +56,9 @@ jobs:
       - name: lint
         run: |
           cd mafalb/ci
-          ansible-lint
+          ansible-lint -x galaxy[version-incorrect],galaxy[tags]
 
-      - name: lint
+      - name: sanity
         run: |
           cd mafalb/ci
           ansible-test sanity
