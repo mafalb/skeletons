@@ -1,0 +1,36 @@
+# vim: set ft=yaml ts=2 expandtab:
+
+# Copyright (c) {{ author }}
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+
+driver:
+  name: ${CI_DRIVER:-podman}
+
+platforms:
+  - name: ${CI_HOSTNAME}
+    image: ${CI_IMAGE}
+    dockerfile: ../resources/Dockerfile-${CI_DOCKERFILE}
+    volumes:
+      - ${PWD}/../../:/root/collections/ansible_collections:Z
+
+provisioner:
+  name: ansible
+  ansible_args:
+    - --tags=all,debug
+    - --diff
+  config_options:
+    defaults:
+      gathering: smart
+      interpreter_python: auto
+      stdout_callback: community.general.yaml
+      bin_ansible_callbacks: true
+
+verifier:
+  name: ansible
+...
