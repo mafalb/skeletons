@@ -22,7 +22,10 @@ on: # yamllint disable-line rule:truthy
 
 jobs:
 
-  ansible-test:
+  ANSIBLECOLLECTION:
+    uses: mafalb/workflows/.github/workflows/reusable/ansiblecollection.yml@main
+
+  CI:
 
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
