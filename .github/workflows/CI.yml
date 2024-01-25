@@ -23,7 +23,7 @@ on: # yamllint disable-line rule:truthy
 jobs:
 
   ANSIBLECOLLECTION:
-    uses: mafalb/workflows/.github/workflows/reusable/ansiblecollection.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@main
 
   CI:
 
