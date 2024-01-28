@@ -22,11 +22,15 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
 
-  CI:
+  SELECTBRANCH:
+    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
+
+  ci:
 
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-22.04
+    needs: SELECTBRANCH
     strategy:
       fail-fast: false
 
@@ -65,4 +69,22 @@ jobs:
         run: |
           cd ci
           ansible-test sanity
+
+  dispatch:
+    runs-on: ubuntu-22.04
+    needs:
+      - PREPARE
+      - ci
+    env:
+      TARGETED_BRANCH: ${{ jobs.PREPARE.outputs.ref }}
+    steps:
+      - name: Run workflow on mafalb/ansible-test-collections
+        env:
+          URI: https://api.github.com/repos
+          REPO: mafalb/ansible-test-collections
+        run: |
+          curl -X POST $URI/$REPO/dispatches \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H 'Accept: application/vnd.github+json' \
+          --data '{"client_payload": { "targeted_branch": "$TARGETED_BRANCH }}" }}'
 ...
