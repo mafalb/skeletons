@@ -76,7 +76,9 @@ jobs:
       - PREPARE
       - ci
     env:
-      TARGETED_BRANCH: ${{ jobs.PREPARE.outputs.ref }}
+      # stay in the environment we are in
+      # i.e. if we are running in dev, we want to call others in dev
+      TARGETED_BRANCH: ${{ needs.PREPARE.outputs.ref }}
     steps:
       - name: Run workflow on mafalb/ansible-test-collections
         env:
