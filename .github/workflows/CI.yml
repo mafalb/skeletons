@@ -73,13 +73,18 @@ jobs:
   dispatch:
     runs-on: ubuntu-22.04
     needs:
-      - PREPARE
+      - SELECTBRANCH
       - ci
     env:
       # stay in the environment we are in
       # i.e. if we are running in dev, we want to call others in dev
-      TARGETED_BRANCH: ${{ needs.PREPARE.outputs.ref }}
+      TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
     steps:
+
+      - name: Assertions
+        run: |
+          test -n "$TARGETED_BRANCH"
+
       - name: Run workflow on mafalb/ansible-test-collections
         env:
           URI: https://api.github.com/repos
