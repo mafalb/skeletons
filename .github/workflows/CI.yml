@@ -79,8 +79,10 @@ jobs:
       # stay in the environment we are in
       # i.e. if we are running in dev, we want to call others in dev
       TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
+
     permissions:
       actions: write
+
     steps:
 
       - name: Assertions
@@ -95,7 +97,7 @@ jobs:
           REPO: mafalb/ansible-test-collections
           WORKFLOW: "CI.yml"
         run: |
-          curl --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
+          curl -sv --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
           -H 'content-type: application/json' \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
