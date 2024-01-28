@@ -80,8 +80,7 @@ jobs:
       # i.e. if we are running in dev, we want to call others in dev
       TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
 
-    permissions:
-      actions: write
+    permissions: write-all
 
     steps:
 
