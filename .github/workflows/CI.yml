@@ -80,13 +80,15 @@ jobs:
       # i.e. if we are running in dev, we want to call others in dev
       TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
 
-    permissions: write-all
+    permissions:
+      actions: write
 
     steps:
 
       - name: Assertions
         run: |
           test -n "$TARGETED_BRANCH"
+          test -n "${{ secrets.GITHUB_TOKEN }}"
 
       # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
       # https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
@@ -94,7 +96,7 @@ jobs:
         env:
           URI: https://api.github.com/repos
           REPO: mafalb/ansible-test-collections
-          WORKFLOW: "CI.yml"
+          WORKFLOW: CI
         run: |
           curl -sv -L --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
           -H "Accept: application/vnd.github+json" \
