@@ -88,7 +88,6 @@ jobs:
       - name: Assertions
         run: |
           test -n "$TARGETED_BRANCH"
-          test -n "${{ secrets.GITHUB_TOKEN }}"
 
       # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
       # https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
@@ -98,9 +97,9 @@ jobs:
           REPO: mafalb/ansible-test-collections
           WORKFLOW: CI
         run: |
-          curl --trace - -L --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
+          curl -sv -L --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          --data '{"ref": "$TARGETED_BRANCH", "inputs": {"targeted_branch": "$TARGETED_BRANCH"}}'
+          --data '{"ref": "$TARGETED_BRANCH", "inputs":{"targeted_branch": "$TARGETED_BRANCH"}}'
 ...
