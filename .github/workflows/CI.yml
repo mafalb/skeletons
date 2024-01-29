@@ -56,7 +56,7 @@ jobs:
 
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
-        run: ansible-galaxy collection init --collection-skeleton ansible_collection_skeleton mafalb.ci
+        run: ansible-galaxy collection init --collection-skeleton ../ansible_collection_skeleton mafalb.ci
 
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci
