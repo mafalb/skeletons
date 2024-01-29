@@ -5,10 +5,10 @@
 |master|![master branch CI](https://github.com/mafalb/ansible_collection_skeleton/actions/workflows/CI.yml/badge.svg)|
 |dev|![dev branch CI](https://github.com/mafalb/ansible_collection_skeleton/actions/workflows/CI.yml/badge.svg?branch=dev)|
 
-Use it with ansible-galaxy when you use init.  
+Use it with ansible-galaxy when you use init.
 Jinja templates are processed by ansible-galaxy and have precedence over the non template counterparts. This README is one example of that.
 
-`README.md` -> this file  
+`README.md` -> this file
 `README.md.j2` -> becomes the README.md5 in the newly initialized collection.
 
 You can find a similar role skeleton at
