@@ -38,8 +38,8 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v4
-        path:
-          ansible_collection_skeleton
+        with:
+          path: ansible_collection_skeleton
 
       - name: Create a directory for ansible collections
         run: mkdir -p ansible_collections
@@ -62,7 +62,7 @@ jobs:
         working-directory: ansible_collections/mafalb/ci
         run: |
           yamllint -s .
-          ansible-lint -x galaxy[version-incorrect],galaxy[tags]
+          ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
 
       - name: Collection | sanity
         working-directory: ansible_collections/mafalb/ci
@@ -102,7 +102,7 @@ jobs:
           WORKFLOW: "CI.yml"
         run: |
           set -x
-          curl -sSv -L --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
+          curl -sSv -L --fail -X POST "$URI/$REPO/actions/workflows/$WORKFLOW/dispatches" \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
