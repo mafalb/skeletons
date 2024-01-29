@@ -103,5 +103,5 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          --data {"ref": "$TARGETED_BRANCH", "inputs":{"targeted_branch": "$TARGETED_BRANCH"}}
+          --data "'"{"ref": "$TARGETED_BRANCH", "inputs":{"targeted_branch": "$TARGETED_BRANCH"}}"'"
 ...
