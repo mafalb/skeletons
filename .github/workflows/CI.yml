@@ -96,7 +96,7 @@ jobs:
         env:
           URI: https://api.github.com/repos
           REPO: mafalb/ansible-test-collections
-          WORKFLOW: CI
+          WORKFLOW: "CI.yml"
         run: |
           curl -sv -L --fail -X POST $URI/$REPO/actions/workflows/$WORKFLOW/dispatches \
           -H "Accept: application/vnd.github+json" \
