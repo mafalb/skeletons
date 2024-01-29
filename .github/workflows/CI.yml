@@ -34,16 +34,15 @@ jobs:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
 
-    defaults:
-      run:
-        working-directory: ansible_collections/mafalb
-
     steps:
 
       - name: checkout
         uses: actions/checkout@v4
-        with:
-          path: ansible_collections/mafalb/ansible_collection_skeleton
+        path:
+          ansible_collection_skeleton
+
+      - name: Create a directory for ansible collections
+        run: mkdir -p ansible_collections
 
       - name: install shellcheck
         run: sudo apt-get install shellcheck
@@ -51,19 +50,23 @@ jobs:
       - name: install ansible-lint
         run: pip install ansible-lint
 
-      - name: create a new collection
-        run: |
-          cd ../
-          ansible-galaxy collection init --collection-skeleton mafalb/ansible_collection_skeleton mafalb.ci
+      - name: yamllint
+        working-directory: ansible_collection_skeleton
+        run: yamllint -s .
 
-      - name: lint
+      - name: Collection | create a new collection with our skeleton
+        working-directory: ansible_collections
+        run: ansible-galaxy collection init --collection-skeleton ansible_collection_skeleton mafalb.ci
+
+      - name: Collection | lint
+        working-directory: ansible_collections/mafalb/ci
         run: |
-          cd ci
+          yamllint -s .
           ansible-lint -x galaxy[version-incorrect],galaxy[tags]
 
-      - name: sanity
+      - name: Collection | sanity
+        working-directory: ansible_collections/mafalb/ci
         run: |
-          cd ci
           ansible-test sanity
 
   SELECTBRANCH:
