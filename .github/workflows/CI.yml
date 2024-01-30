@@ -37,7 +37,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
-          path: ansible_collection_skeleton
+          path: skeletons
 
       - name: Create a directory for ansible collections
         run: mkdir -p ansible_collections
@@ -49,8 +49,20 @@ jobs:
         run: pip install ansible-lint
 
       - name: yamllint
-        working-directory: ansible_collection_skeleton
+        working-directory: skeletons
         run: yamllint -s .
+
+      # https://github.com/ansible/ansible/pull/82624
+      - name: No "masked" files do exist in ansible-collection-skeleton
+        working-directory: skeletons
+        run: |
+            while read f
+            do
+                if test -f "$f".j2;
+                then
+                    false
+                fi
+            done < <(find ansible-collection-skeleton -type f)
 
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
@@ -66,16 +78,6 @@ jobs:
         working-directory: ansible_collections/mafalb/ci
         run: |
           ansible-test sanity
-
-      - name: Collection | README.md was generated from the correct source
-        working-directory: ansible_collections/mafalb/ci
-        run: |
-          grep "$COLLECTION" README.md
-
-      - name: Collection | README.md was generated from the correct source
-        working-directory: ansible_collections/mafalb/ci
-        run: |
-          grep "# CI for the collection $COLLECTION" .github/workflows/CI.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main

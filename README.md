@@ -1,29 +1,27 @@
-# Ansible collection skeleton
+# Skeletons
 
 |||
 |---|---|
-|master|![master branch CI](https://github.com/mafalb/ansible_collection_skeleton/actions/workflows/CI.yml/badge.svg)|
-|dev|![dev branch CI](https://github.com/mafalb/ansible_collection_skeleton/actions/workflows/CI.yml/badge.svg?branch=dev)|
+|master|![master branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg)|
+|dev|![dev branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=dev)|
+
+
+## Ansible collection skeleton
 
 Use it with ansible-galaxy when you use init.
-Jinja templates are processed by ansible-galaxy and have precedence over the non template counterparts. This README is one example of that.
-
-`README.md` -> this file
-`README.md.j2` -> becomes the README.md5 in the newly initialized collection.
 
 You can find a similar role skeleton at
 https://github.com/mafalb/ansible_role_skeleton.git
 
->>>>>>> dev
 
 ## Basic Usage
 
 ```shell
-[ansible_collections] $ git clone https://github.com/mafalb/ansible_collection_skeleton /tmp/ansible_collection_skeleton
+[ansible_collections] $ git clone https://github.com/mafalb/skeletons /tmp/skeletons
 ```
 
 ```shell
-[ansible_collections] $ ansible-galaxy collection init --collection-skeleton /tmp/ansible_collection_skeleton local.mycollection
+[ansible_collections] $ ansible-galaxy collection init --collection-skeleton /tmp/skeletons/ansible-collection-skeleton local.mycollection
 ```
 
 ## CI
