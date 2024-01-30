@@ -30,6 +30,7 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
+      COLLECTION: "mafalb.ci"
 
     steps:
 
@@ -65,6 +66,16 @@ jobs:
         working-directory: ansible_collections/mafalb/ci
         run: |
           ansible-test sanity
+
+      - name: Collection | README.md was generated from the correct source
+        working-directory: ansible_collections/mafalb/ci
+        run: |
+          grep "$COLLECTION" README.md
+
+      - name: Collection | README.md was generated from the correct source
+        working-directory: ansible_collections/mafalb/ci
+        run: |
+          grep "# CI for the collection $COLLECTION" .github/workflows/CI.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
