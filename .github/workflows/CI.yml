@@ -62,7 +62,9 @@ jobs:
 
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
-        run: ansible-galaxy collection init --collection-skeleton ../skeletons/ansible-collection-skeleton local.ci
+        run: |
+          ansible-galaxy collection init --collection-skeleton ../skeletons/ansible-collection-skeleton local.ci
+          ansible-galaxy collection install -r local/ci/requirements.yml
 
       - name: Collection | lint
         working-directory: ansible_collections/local/ci
