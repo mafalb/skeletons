@@ -107,7 +107,7 @@ jobs:
       - name: Collection | run playbook
         working-directory: ansible_collections/local/ci
         env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE"
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$ANSIBLE_COLLECTIONS_PATH"
         run: |
           ansible-playbook playbooks/ci.yml
 
