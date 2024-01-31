@@ -78,7 +78,15 @@ jobs:
 
       - name: Collectionrole | create a new role
         working-directory: ansible_collections
-        run: ansible-galaxy role init --role-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
+        run: |
+          ansible-galaxy role init --role-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
+          cat - >mafalb/ci/playbooks/ci.yml << EOF
+          ---
+          - name: A ci playbook
+          hosts: localhost
+            roles:
+              - role: local.ci.role1
+          EOF
 
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci
@@ -90,6 +98,11 @@ jobs:
         working-directory: ansible_collections/mafalb/ci
         run: |
           ansible-test sanity
+
+      - name: Collection | run playbook
+        working-directory: ansible_collections/mafalb/ci
+        run: |
+          ansible-playbook playbooks/ci.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
