@@ -93,6 +93,9 @@ jobs:
         env:
           ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/collections"
         run: |
+          test -f "tasks/main.yml"
+          pwd
+          tree "$GITHUB_WORKSPACE/collections"
           yamllint -s .
           ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
 
