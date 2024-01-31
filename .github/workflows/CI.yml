@@ -22,7 +22,7 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
 
-  ansiblecollection:
+  ci:
     runs-on: ubuntu-22.04
     env:
       PY_COLORS: 1
