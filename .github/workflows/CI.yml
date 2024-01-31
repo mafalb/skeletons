@@ -91,7 +91,7 @@ jobs:
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci
         env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE"
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/collections"
         run: |
           yamllint -s .
           ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
