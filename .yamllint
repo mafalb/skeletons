@@ -3,8 +3,6 @@ extends: default
 ignore:
   - ansible-collection-role-skeleton/meta/main.yml
   - ansible-standalone-role-skeleton/meta/main.yml
-  - ansible-standalone-role-skeleton/meta/argument_spec.yml
-  - ansible-collection-role-skeleton/meta/argument_spec.yml
 rules:
   line-length:
     max: 160
