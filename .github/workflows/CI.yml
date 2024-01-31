@@ -91,11 +91,11 @@ jobs:
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci
         env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/collections"
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/ansible_collections"
         run: |
-          test -f "tasks/main.yml"
+          test -f "roles/role1/tasks/main.yml"
           pwd
-          tree "$GITHUB_WORKSPACE/collections"
+          tree "$GITHUB_WORKSPACE/ansible_collections"
           yamllint -s .
           ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
 
