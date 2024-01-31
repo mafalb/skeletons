@@ -78,7 +78,7 @@ jobs:
 
       - name: Collectionrole | create a new role
         working-directory: ansible_collections
-        run: ansible-galaxy role init --collection-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
+        run: ansible-galaxy role init --role-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
 
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci
