@@ -22,10 +22,7 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
 
-  ci:
-
-    # don't run on pull request from ourselves
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+  ansiblecollection:
     runs-on: ubuntu-22.04
     env:
       PY_COLORS: 1
@@ -67,6 +64,21 @@ jobs:
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
         run: ansible-galaxy collection init --collection-skeleton ../skeletons/ansible-collection-skeleton mafalb.ci
+
+      - name: Collection | lint
+        working-directory: ansible_collections/mafalb/ci
+        run: |
+          yamllint -s .
+          ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
+
+      - name: Collection | sanity
+        working-directory: ansible_collections/mafalb/ci
+        run: |
+          ansible-test sanity
+
+      - name: Collectionrole | create a new role
+        working-directory: ansible_collections
+        run: ansible-galaxy role init --collection-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
 
       - name: Collection | lint
         working-directory: ansible_collections/mafalb/ci

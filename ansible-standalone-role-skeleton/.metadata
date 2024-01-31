@@ -1,0 +1,8 @@
+---
+role_name: {{ role_name }}
+#namespace: {{ namespace }}
+#collection_name: {{ collection_name }}
+# author:
+# license:
+# licenseshort:
+...
