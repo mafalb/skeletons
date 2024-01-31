@@ -1,7 +1,7 @@
 ---
 extends: default
 ignore:
-  - ansible-collection-role-skeleton/meta/main.yml
+  # - ansible-collection-role-skeleton/meta/main.yml
   - ansible-standalone-role-skeleton/meta/main.yml
 rules:
   line-length:

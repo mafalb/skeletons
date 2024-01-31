@@ -2,4 +2,7 @@
 #
 # @@license@@
 ---
+- name: Debug
+  ansible.builtin.debug:
+    msg: "Hello from {{ role_name }}"
 ...
