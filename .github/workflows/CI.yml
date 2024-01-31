@@ -90,8 +90,7 @@ jobs:
       - name: Collection | lint
         working-directory: ansible_collections/local/ci
         env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/ansible_collections"
-          ANSIBLE_COLLECTIONS_PATHS: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/ansible_collections"
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE"
         run: |
           test -f "roles/role1/tasks/main.yml"
           pwd
@@ -107,6 +106,8 @@ jobs:
 
       - name: Collection | run playbook
         working-directory: ansible_collections/local/ci
+        env:
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE"
         run: |
           ansible-playbook playbooks/ci.yml
 
