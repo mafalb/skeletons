@@ -27,7 +27,6 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
-      COLLECTION: "mafalb.ci"
 
     steps:
 
@@ -63,24 +62,24 @@ jobs:
 
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
-        run: ansible-galaxy collection init --collection-skeleton ../skeletons/ansible-collection-skeleton mafalb.ci
+        run: ansible-galaxy collection init --collection-skeleton ../skeletons/ansible-collection-skeleton local.ci
 
       - name: Collection | lint
-        working-directory: ansible_collections/mafalb/ci
+        working-directory: ansible_collections/local/ci
         run: |
           yamllint -s .
           ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
 
       - name: Collection | sanity
-        working-directory: ansible_collections/mafalb/ci
+        working-directory: ansible_collections/local/ci
         run: |
           ansible-test sanity
 
       - name: Collectionrole | create a new role
         working-directory: ansible_collections
         run: |
-          ansible-galaxy role init --role-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path mafalb/ci/roles
-          cat - >mafalb/ci/playbooks/ci.yml << EOF
+          ansible-galaxy role init --role-skeleton ../skeletons/ansible-collection-role-skeleton role1 --init-path local/ci/roles
+          cat - >local/ci/playbooks/ci.yml << EOF
           ---
           - name: A ci playbook
             hosts: localhost
@@ -89,7 +88,7 @@ jobs:
           EOF
 
       - name: Collection | lint
-        working-directory: ansible_collections/mafalb/ci
+        working-directory: ansible_collections/local/ci
         env:
           ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/ansible_collections"
           ANSIBLE_COLLECTIONS_PATHS: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/ansible_collections"
@@ -102,12 +101,12 @@ jobs:
           ansible-lint -x "galaxy[version-incorrect],galaxy[tags]"
 
       - name: Collection | sanity
-        working-directory: ansible_collections/mafalb/ci
+        working-directory: ansible_collections/local/ci
         run: |
           ansible-test sanity
 
       - name: Collection | run playbook
-        working-directory: ansible_collections/mafalb/ci
+        working-directory: ansible_collections/local/ci
         run: |
           ansible-playbook playbooks/ci.yml
 
