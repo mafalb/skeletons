@@ -22,6 +22,8 @@ on:  # yamllint disable-line rule:truthy
 jobs:
 
   ci:
+    # don't run on pull request from ourselves
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-22.04
     env:
       PY_COLORS: 1
