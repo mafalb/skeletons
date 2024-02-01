@@ -14,10 +14,9 @@ on:  # yamllint disable-line rule:truthy
       - '**'
     tags-ignore:
       - '*'
-
+  pull_request:
   schedule:
-    - cron: '40 12 * * 6'
-
+    - cron: '8 10 * * 2'
   workflow_dispatch:
 
 jobs:
@@ -27,6 +26,8 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
+      # Set ANSIBLE_COLLECTIONS_PATH restrictive, adjust it where necessary
+      ANSIBLE_COLLECTIONS_PATH: "$HOME/.ansible/collections"
 
     steps:
 
@@ -58,7 +59,10 @@ jobs:
                 then
                     false
                 fi
-            done < <(find ansible-collection-skeleton -type f)
+            # we search the whole directory tree for now,
+            # change that when it cause troubles
+            #
+            done < <(find . -type f)
 
       - name: Collection | create a new collection with our skeleton
         working-directory: ansible_collections
@@ -91,8 +95,6 @@ jobs:
 
       - name: Collection | lint
         working-directory: ansible_collections/local/ci
-        env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE"
         run: |
           test -f "roles/role1/tasks/main.yml"
           pwd
@@ -103,15 +105,13 @@ jobs:
 
       - name: Collection | sanity
         working-directory: ansible_collections/local/ci
-        run: |
-          ansible-test sanity
+        run: ansible-test sanity
 
       - name: Collection | run playbook
         working-directory: ansible_collections/local/ci
         env:
-          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:$HOME/.ansible/collections"
-        run: |
-          ansible-playbook playbooks/ci.yml
+          ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:${{ env.ANSIBLE_COLLECTIONS_PATH }}"
+        run: ansible-playbook playbooks/ci.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
