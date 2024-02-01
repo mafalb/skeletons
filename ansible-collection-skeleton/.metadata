@@ -1,6 +1,6 @@
 # vim: set ft=yaml ts=2 expandtab:
 #
-# @@license@@
+# ___license___
 ---
 namespace: {{ namespace }}
 collection_name: {{ collection_name }}
