@@ -78,7 +78,9 @@ jobs:
           JSON
 
   check:  # This job does nothing and is only used for the branch protection
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository && always()
+    if: |
+      always() &&
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository && always()
     runs-on: ubuntu-22.04
     needs:
       - ci
