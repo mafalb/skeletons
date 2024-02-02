@@ -5,8 +5,7 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-name: CI
-
+name: Skeletons
 on:  # yamllint disable-line rule:truthy
   workflow_call:
 
@@ -17,12 +16,11 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
-      # Set ANSIBLE_COLLECTIONS_PATH restrictive, adjust it where necessary
       ANSIBLE_COLLECTIONS_PATH: "$HOME/.ansible/collections"
 
     steps:
 
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           path: skeletons
@@ -30,10 +28,10 @@ jobs:
       - name: Create a directory for ansible collections
         run: mkdir -p ansible_collections
 
-      - name: install shellcheck
+      - name: Install shellcheck
         run: sudo apt-get install shellcheck
 
-      - name: install ansible-lint
+      - name: Install ansible-lint
         run: pip install ansible-lint
 
       - name: yamllint
@@ -102,6 +100,8 @@ jobs:
         working-directory: ansible_collections/local/ci
         env:
           ANSIBLE_COLLECTIONS_PATH: "$GITHUB_WORKSPACE:${{ env.ANSIBLE_COLLECTIONS_PATH }}"
-        run: ansible-playbook playbooks/ci.yml
+        run: |
+          echo "$ANSIBLE_COLLECTIONS_PATH"
+          ansible-playbook playbooks/ci.yml
 
 ...
