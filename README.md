@@ -14,7 +14,7 @@ You can find a similar role skeleton at
 https://github.com/mafalb/ansible_role_skeleton.git
 
 
-## Basic Usage
+### Basic Usage
 
 ```shell
 [ansible_collections] $ git clone https://github.com/mafalb/skeletons /tmp/skeletons
@@ -23,6 +23,10 @@ https://github.com/mafalb/ansible_role_skeleton.git
 ```shell
 [ansible_collections] $ ansible-galaxy collection init --collection-skeleton /tmp/skeletons/ansible-collection-skeleton local.mycollection
 ```
+
+## Ansible collection role skeleton
+
+## Ansible standalone role skeleton
 
 ## CI
 
