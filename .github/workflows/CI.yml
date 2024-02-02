@@ -31,8 +31,7 @@ jobs:
   ci:
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    uses: ./.github/workflows/reusable-CI.yml
-    secrets: inherit
+    uses: ./.github/workflows/reusable-SKELETONS.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
@@ -47,13 +46,14 @@ jobs:
       # stay in the environment we are in
       # i.e. if we are running in dev, we want to call others in dev
       TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
+      SECRET_WORKFLOW_DISPATCH: ${{ secrets.WORKFLOW_DISPATCH }}
 
     steps:
 
       - name: Assertions
         run: |
           test -n "$TARGETED_BRANCH"
-          test -n "${{ secrets.WORKFLOW_DISPATCH }}"
+          test -n "$SECRET_WORKFLOW_DISPATCH }}"
 
       # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
       # https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
@@ -66,7 +66,7 @@ jobs:
           set -x
           curl -sSv -L --fail -X POST "$URI/$REPO/actions/workflows/$WORKFLOW/dispatches" \
           -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH }}" \
+          -H "Authorization: Bearer $SECRET_WORKFLOW_DISPATCH" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           --data @- << JSON
           {
