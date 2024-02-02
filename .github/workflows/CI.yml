@@ -76,4 +76,17 @@ jobs:
             }
           }
           JSON
+
+  check:  # This job does nothing and is only used for the branch protection
+    if: always()
+    runs-on: ubuntu-22.04
+    needs:
+      - ci
+      - dispatch
+      - SELECTBRANCH
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }
 ...
