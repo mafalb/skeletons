@@ -5,11 +5,11 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-name: Generic
+name: CI
 on:  # yamllint disable-line rule:truthy
   pull_request:
 jobs:
-  generic:
+  ci:
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     uses: ./.github/workflows/reusable-SKELETONS.yml
