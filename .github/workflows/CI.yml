@@ -31,7 +31,7 @@ jobs:
   ci:
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    uses: ./.github/workflows/reusable-CI.yml
+    uses: ./.github/workflows/reusable-SKELETONS.yml
 
   SELECTBRANCH:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
