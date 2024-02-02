@@ -5,6 +5,16 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
+# This is far too complicated for me to like it.
+# For now I do a workflow_dispatch to another repo
+#
+# This is not suitable for pull requests because
+# normal pull requests are running in the forkers context.
+#
+# So I made the parts that are shared reusable and
+# I made 2 files. One for pull requests and one for all
+# other uses (push, schedule)
+
 name: CI
 on:  # yamllint disable-line rule:truthy
   push:
@@ -12,7 +22,6 @@ on:  # yamllint disable-line rule:truthy
       - '**'
     tags-ignore:
       - '*'
-  pull_request:
   schedule:
     - cron: '8 10 * * 2'
   workflow_dispatch:
@@ -24,4 +33,47 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     uses: ./.github/workflows/reusable-CI.yml
     secrets: inherit
+
+  SELECTBRANCH:
+    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
+    needs: ci
+
+  dispatch:
+    runs-on: ubuntu-22.04
+    needs:
+      - SELECTBRANCH
+      - ci
+    env:
+      # stay in the environment we are in
+      # i.e. if we are running in dev, we want to call others in dev
+      TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
+
+    steps:
+
+      - name: Assertions
+        run: |
+          test -n "$TARGETED_BRANCH"
+          test -n "${{ secrets.WORKFLOW_DISPATCH }}"
+
+      # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+      # https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
+      - name: Run workflow on mafalb/ansible-test-collections
+        env:
+          URI: https://api.github.com/repos
+          REPO: mafalb/ansible-test-collections
+          WORKFLOW: "CI.yml"
+        run: |
+          set -x
+          curl -sSv -L --fail -X POST "$URI/$REPO/actions/workflows/$WORKFLOW/dispatches" \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          --data @- << JSON
+          {
+            "ref": "$TARGETED_BRANCH",
+            "inputs": {
+              "targeted_branch": "$TARGETED_BRANCH"
+            }
+          }
+          JSON
 ...
