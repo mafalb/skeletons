@@ -15,7 +15,7 @@
 # I made 2 files. One for pull requests and one for all
 # other uses (push, schedule)
 
-name: CI
+name: Ci
 on:  # yamllint disable-line rule:truthy
   push:
     branches:
@@ -25,17 +25,32 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: '8 10 * * 2'
   workflow_dispatch:
+    inputs:
+      targeted_branch:
+        description: The name of the target branch on other repositories
+        type: choice
+        options:
+          - main
+          - dev
 
 jobs:
 
-  ci:
-    # don't run on pull request from ourselves
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    uses: ./.github/workflows/reusable-SKELETONS.yml
-
-  SELECTBRANCH:
+  selectbranch:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
-    needs: ci
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+
+  sanity:
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+
+  ci:
+    uses: ./.github/workflows/ci-skeletons.yml
+    with:
+      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
+    needs: selectbranch
+
 
   dispatch:
     runs-on: ubuntu-22.04
@@ -86,7 +101,7 @@ jobs:
       joblist: ${{ toJSON(needs) }}
     needs:
       - ci
-      - dispatch
       - SELECTBRANCH
+      - dispatch
 
 ...
