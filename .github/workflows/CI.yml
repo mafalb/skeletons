@@ -44,18 +44,17 @@ jobs:
     uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
     with:
       targeted_branch: ${{ inputs.targeted_branch }}
+    needs: selectbranch
 
   ci:
     uses: ./.github/workflows/ci-skeletons.yml
-    with:
-      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
-    needs: selectbranch
+    needs:
+      - sanity
 
 
   dispatch:
     runs-on: ubuntu-22.04
     needs:
-      - SELECTBRANCH
       - ci
     env:
       # stay in the environment we are in
@@ -100,8 +99,8 @@ jobs:
     with:
       joblist: ${{ toJSON(needs) }}
     needs:
+      - selectbranch
+      - sanity
       - ci
-      - SELECTBRANCH
       - dispatch
-
 ...

@@ -14,14 +14,17 @@ jobs:
   selectbranch:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
 
+  sanity:
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+    needs: selectbranch
+
   ci:
     # don't run on pull request from ourselves
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     uses: ./.github/workflows/reusable-SKELETONS.yml
-    with:
-      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
-    needs:
-      - selectbranch
+    needs: selectbranch
 
   allsuccess:
     if: |
@@ -32,5 +35,6 @@ jobs:
       joblist: ${{ toJSON(needs) }}
     needs:
       - selectbranch
+      - sanity
       - ci
 ...
