@@ -59,7 +59,7 @@ jobs:
     env:
       # stay in the environment we are in
       # i.e. if we are running in dev, we want to call others in dev
-      TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
+      TARGETED_BRANCH: ${{ needs.selectbranch.outputs.ref }}
       SECRET_WORKFLOW_DISPATCH: ${{ secrets.WORKFLOW_DISPATCH }}
 
     steps:
