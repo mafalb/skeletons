@@ -15,7 +15,7 @@
 # I made 2 files. One for pull requests and one for all
 # other uses (push, schedule)
 
-name: CI
+name: Ci
 on:  # yamllint disable-line rule:truthy
   push:
     branches:
@@ -25,27 +25,41 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: '8 10 * * 2'
   workflow_dispatch:
+    inputs:
+      targeted_branch:
+        description: The name of the target branch on other repositories
+        type: choice
+        options:
+          - main
+          - dev
 
 jobs:
 
-  ci:
-    # don't run on pull request from ourselves
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    uses: ./.github/workflows/reusable-SKELETONS.yml
-
-  SELECTBRANCH:
+  selectbranch:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
-    needs: ci
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+
+  sanity:
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+    needs: selectbranch
+
+  ci:
+    uses: ./.github/workflows/ci-skeletons.yml
+    needs:
+      - sanity
 
   dispatch:
     runs-on: ubuntu-22.04
     needs:
-      - SELECTBRANCH
+      - selectbranch
       - ci
     env:
       # stay in the environment we are in
       # i.e. if we are running in dev, we want to call others in dev
-      TARGETED_BRANCH: ${{ needs.SELECTBRANCH.outputs.ref }}
+      TARGETED_BRANCH: ${{ needs.selectbranch.outputs.ref }}
       SECRET_WORKFLOW_DISPATCH: ${{ secrets.WORKFLOW_DISPATCH }}
 
     steps:
@@ -77,16 +91,16 @@ jobs:
           }
           JSON
 
-  check:  # This job does nothing and is only used for the branch protection
-    if: always()
-    runs-on: ubuntu-22.04
+  allsuccess:
+    if: |
+      success() || failure() &&
+      ! (github.event.pull_request.head.repo.full_name == github.repository)
+    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@main
+    with:
+      joblist: ${{ toJSON(needs) }}
     needs:
+      - selectbranch
+      - sanity
       - ci
       - dispatch
-      - SELECTBRANCH
-    steps:
-      - name: Decide whether the needed jobs succeeded or failed
-        uses: re-actors/alls-green@release/v1
-        with:
-          jobs: ${{ toJSON(needs) }}
 ...

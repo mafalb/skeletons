@@ -1,0 +1,42 @@
+# vim: set ft=yaml ts=2 expandtab:
+#
+# Copyright (c) Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+name: Ci
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+
+jobs:
+
+  selectbranch:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
+
+  sanity:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+    needs: selectbranch
+
+  ci:
+    # don't run on pull request from ourselves
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: ./.github/workflows/ci-skeletons.yml
+    needs: sanity
+
+  allsuccess:
+    if: |
+      success() || failure() &&
+      ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@main
+    with:
+      joblist: ${{ toJSON(needs) }}
+    needs:
+      - selectbranch
+      - sanity
+      - ci
+...
