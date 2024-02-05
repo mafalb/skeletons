@@ -119,9 +119,10 @@ jobs:
           overwrite: true
 
   ansiblecollection:
+    needs: skeletons
     uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@f-artefact
     with:
       filename: local-ci-0.1.0.tar.gz
-      ref: ${{ needs.selectbranch.outputs.ref }}
+      ref: ${{ inputs.targeted_branch }}
 
 ...

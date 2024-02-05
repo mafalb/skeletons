@@ -52,7 +52,6 @@ jobs:
       targeted_branch: ${{ needs.selectbranch.outputs.ref }}
     needs:
       - selectbranch
-      - sanity
 
   dispatch:
     runs-on: ubuntu-22.04
