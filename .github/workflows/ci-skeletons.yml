@@ -121,6 +121,5 @@ jobs:
   ansiblecollection:
     uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@f-artefact
     with:
-      target_branch: ${{ inputs.targeted_branch }}
       filename: local-ci-0.1.0.tar.gz
 ...
