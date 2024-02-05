@@ -105,7 +105,7 @@ jobs:
           ansible-playbook playbooks/ci.yml
 
       - name: Collection | Build the collection
-        run: ansible-galaxy build ansible_collections/local/ci
+        run: ansible-galaxy collection build ansible_collections/local/ci
 
       - name: Collection | Upload Artifact
         uses: actions/upload-artifact@v4
