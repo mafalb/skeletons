@@ -107,14 +107,18 @@ jobs:
           echo "$ANSIBLE_COLLECTIONS_PATH"
           ansible-playbook playbooks/ci.yml
 
-  ansibleartefact:
-    uses: mafalb/workflows/.github/workflows/reusable-ansibleartefact.yml@f-artefact
-    with:
-      src: ansible_collections/local/ci
-      dest: local-ci-0.1.0.tar.gz
+      - name: Collection | Build the collection
+        run: ansible-galaxy collection build ansible_collections/local/ci
+
+      - name: Collection | Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansible-collections-${{ inputs.targeted_branch }}
+          path: local-ci-0.1.0.tar.gz
+          if-no-files-found: error
+          overwrite: true
 
   ansiblecollection:
-    needs: ansibleartefact
     uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@f-artefact
     with:
       filename: local-ci-0.1.0.tar.gz
