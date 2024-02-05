@@ -43,7 +43,7 @@ jobs:
   sanity:
     uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
     with:
-      targeted_branch: ${{ inputs.targeted_branch }}
+      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
     needs: selectbranch
 
   ci:
