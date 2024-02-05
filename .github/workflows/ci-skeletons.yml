@@ -122,5 +122,6 @@ jobs:
     uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@f-artefact
     with:
       filename: local-ci-0.1.0.tar.gz
+      ref: ${{ needs.selectbranch.outputs.ref }}
 
 ...
