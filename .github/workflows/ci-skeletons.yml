@@ -104,4 +104,14 @@ jobs:
           echo "$ANSIBLE_COLLECTIONS_PATH"
           ansible-playbook playbooks/ci.yml
 
+      - name: Collection | Build the collection
+        run: ansible-galaxy build ansible_collections/local/ci
+
+      - name: Collection | Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansible-collection-local-ci-dev
+          path: local-ci-0.1.0.tar.gz
+          if-no-files-found: error
+          overwrite: true
 ...
