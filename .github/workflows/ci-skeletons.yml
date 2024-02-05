@@ -118,6 +118,9 @@ jobs:
           if-no-files-found: error
           overwrite: true
 
+  ansiblecollection:
+    runs-on: ubuntu-22.04
+    steps:
       - name: Collection | Test
         uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@f-artefact
         with:
