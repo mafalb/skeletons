@@ -1,0 +1,8 @@
+# vim: set ft=yaml ts=2 expandtab:
+#
+# @@license@@
+---
+- name: Debug
+  ansible.builtin.debug:
+    msg: "Hello from {{ role_name }}"
+...
