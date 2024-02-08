@@ -129,7 +129,7 @@ jobs:
     needs: skeletons
     uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@f-ansiblecollection
     with:
-      ref: f-ansiblecollection
+      targeted_branch: f-ansiblecollection
       target: rocky9
 
 ...
