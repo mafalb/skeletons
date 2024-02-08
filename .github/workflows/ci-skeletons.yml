@@ -131,5 +131,6 @@ jobs:
     with:
       targeted_branch: f-ansiblecollection
       target: rocky9
+      filename: local-ci-0.1.0.tar.gz
 
 ...
