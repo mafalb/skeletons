@@ -39,7 +39,7 @@ jobs:
   ci:
     uses: ./.github/workflows/ci-skeletons.yml
     with:
-#      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
+      # targeted_branch: ${{ needs.selectbranch.outputs.ref }}
       targeted_branch: f-ansiblecollection
     needs:
       - selectbranch
