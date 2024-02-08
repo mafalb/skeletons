@@ -125,4 +125,11 @@ jobs:
       filename: local-ci-0.1.0.tar.gz
       ref: ${{ inputs.targeted_branch }}
 
+  molecule:
+    needs: skeletons
+    uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@f-ansiblecollection
+    with:
+      ref: f-ansiblecollection
+      target: rocky9
+
 ...
