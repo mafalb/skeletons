@@ -127,7 +127,7 @@ jobs:
 
   molecule:
     needs: skeletons
-    uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@dev
+    uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@main
     with:
       targeted_branch: ${{ inputs.targeted_branch }}
       target: rocky9
