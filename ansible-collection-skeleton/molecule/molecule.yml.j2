@@ -7,7 +7,7 @@
 dependency:
   name: galaxy
   options:
-    requirements-file: requirements.yml
+    requirements-file: molecule/requirements.yml
 
 driver:
   name: ${CI_DRIVER:-podman}
@@ -15,9 +15,7 @@ driver:
 platforms:
   - name: ${CI_HOSTNAME}
     image: ${CI_IMAGE}
-    dockerfile: ../resources/Dockerfile-${CI_DOCKERFILE}
-    volumes:
-      - ${PWD}/../../:/root/collections/ansible_collections:Z
+    dockerfile: ../${CI_DOCKERFILE}
 
 provisioner:
   name: ansible
