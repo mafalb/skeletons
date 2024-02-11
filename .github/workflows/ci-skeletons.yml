@@ -129,7 +129,7 @@ jobs:
     needs: skeletons
     uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@f-ansiblecollection
     with:
-      targeted_branch: f-ansiblecollection
+      targeted_branch: ${{ inputs.targeted_branch }}
       target: rocky9
       filename: local-ci-0.1.0.tar.gz
 
