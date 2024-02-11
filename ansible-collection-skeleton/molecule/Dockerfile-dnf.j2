@@ -1,4 +1,4 @@
-{% pre %}
+{% raw %}
 
 {% if item.registry is defined %}
 FROM {{ item.registry.url }}/{{ item.image }}
@@ -18,4 +18,4 @@ ENV {{ var }} {{ value }}
 {% endif %}
 
 RUN dnf makecache && dnf --assumeyes install python3 sudo python3-dnf bash iproute which && dnf clean all
-{% endpre %}
+{% endraw %}
