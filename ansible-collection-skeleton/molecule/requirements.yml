@@ -7,4 +7,5 @@
 collections:
   # use yaml callback
   - name: community.general
+  - name: containers.podman
 ...
