@@ -120,14 +120,14 @@ jobs:
 
   ansiblecollection:
     needs: skeletons
-    uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-ansiblecollection.yml@prod
     with:
       filename: local-ci-0.1.0.tar.gz
       targeted_branch: ${{ inputs.targeted_branch }}
 
   molecule:
     needs: skeletons
-    uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-molecule.yml@prod
     with:
       targeted_branch: ${{ inputs.targeted_branch }}
       target: rocky9

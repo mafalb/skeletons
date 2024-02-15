@@ -26,12 +26,12 @@ on:  # yamllint disable-line rule:truthy
 jobs:
 
   selectbranch:
-    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
     with:
       targeted_branch: ${{ inputs.targeted_branch }}
 
   sanity:
-    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@prod
     with:
       targeted_branch: ${{ needs.selectbranch.outputs.ref }}
     needs: selectbranch
@@ -47,7 +47,7 @@ jobs:
     if: |
       success() || failure() &&
       ! (github.event.pull_request.head.repo.full_name == github.repository)
-    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@main
+    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@prod
     with:
       joblist: ${{ toJSON(needs) }}
     needs:
