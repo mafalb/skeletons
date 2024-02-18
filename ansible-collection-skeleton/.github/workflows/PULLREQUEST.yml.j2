@@ -6,7 +6,7 @@ on:  # yamllint disable-line rule:truthy
   pull_request:
 
 jobs:
-{{ raw }}
+{% raw %}
   selectbranch:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
 
@@ -24,5 +24,5 @@ jobs:
     needs:
       - selectbranch
       - sanity
-{{ endraw }}
+{% endraw %}
 ...
