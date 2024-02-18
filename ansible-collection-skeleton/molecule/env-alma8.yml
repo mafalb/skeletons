@@ -1,5 +1,7 @@
 ---
-CI_IMAGE: quay.io/almalinux/almalinux:8
+# https://bugs.almalinux.org/view.php?id=455
+# CI_IMAGE: quay.io/almalinux/almalinux:8
+CI_IMAGE: docker.io/almalinux:8
 CI_HOSTNAME: ci-alma8
 CI_DOCKERFILE: Dockerfile-dnf.j2
 ...
