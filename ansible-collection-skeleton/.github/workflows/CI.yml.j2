@@ -1,6 +1,4 @@
-# Copyright (c) @@author@@
-# GNU General Public License v3.0+
-# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+# ___license___
 
 # CI for the collection {{ namespace }}.{{ collection_name }}
 
@@ -24,9 +22,10 @@ on:  # yamllint disable-line rule:truthy
           - prod
 
 jobs:
-
+{{ raw }}
   ci:
     if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: ./.github/workflows/ci-CI.yml
     with:
       targeted_branch: ${{ inputs.targeted_branch }}
+{{ endraw }}
