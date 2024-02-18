@@ -33,7 +33,6 @@ jobs:
   allsuccess:
     if: |
       success() || failure() &&
-      ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@main
     with:
       joblist: ${{ toJSON(needs) }}
