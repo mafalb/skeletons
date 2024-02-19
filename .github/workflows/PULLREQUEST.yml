@@ -1,3 +1,5 @@
+# vim: set ft=yaml ts=2 expandtab:
+#
 # Copyright (c) Markus Falb <markus.falb@mafalb.at>
 # GNU General Public License v3.0+
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
@@ -10,21 +12,33 @@ on:  # yamllint disable-line rule:truthy
 jobs:
 
   selectbranch:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
 
   sanity:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@prod
     with:
       targeted_branch: ${{ needs.selectbranch.outputs.ref }}
     needs: selectbranch
 
+  ci:
+    # don't run on pull request from ourselves
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: ./.github/workflows/ci-skeletons.yml
+    with:
+      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
+    needs: sanity
+
   allsuccess:
     if: |
-      success() || failure()
+      success() || failure() &&
+      ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@prod
     with:
       joblist: ${{ toJSON(needs) }}
     needs:
       - selectbranch
       - sanity
+      - ci
 ...
