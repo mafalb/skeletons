@@ -1,14 +1,12 @@
-# Copyright (c) Markus Falb <markus.falb@mafalb.at>
-# GNU General Public License v3.0+
-# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+# ___license___
 ---
 
-name: Ci
+name: Pullrequest
 on:  # yamllint disable-line rule:truthy
   pull_request:
 
 jobs:
-
+{% raw %}
   selectbranch:
     uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
 
@@ -19,12 +17,12 @@ jobs:
     needs: selectbranch
 
   allsuccess:
-    if: |
-      success() || failure()
+    if: success() || failure()
     uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@prod
     with:
       joblist: ${{ toJSON(needs) }}
     needs:
       - selectbranch
       - sanity
+{% endraw %}
 ...

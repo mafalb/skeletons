@@ -2,7 +2,7 @@
 
 |||
 |---|---|
-|master|![master branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg)|
+|prod|![master branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=prod)|
 |dev|![dev branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=dev)|
 
 
@@ -27,17 +27,6 @@ https://github.com/mafalb/ansible_role_skeleton.git
 ## Ansible collection role skeleton
 
 ## Ansible standalone role skeleton
-
-## CI
-
-There is a related repository which is partly derived from this repository and is located at
-https://github.com/mafalb/ansible-test-collections.git
-
-At least one of these collections in that repo is periodically initialized from this skeleton by CI.
-
-```shell
-[ansible_collections] $ ansible-galaxy collection install git+https://github.com/mafalb/ansible-test-collections.git,dev -p collections
-```
 
 ## License
 
