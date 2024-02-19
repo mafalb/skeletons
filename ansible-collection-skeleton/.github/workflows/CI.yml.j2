@@ -1,16 +1,10 @@
-# vim: set ft=yaml ts=2 expandtab:
-#
-# Copyright (c) @@author@@
-# GNU General Public License v3.0+
-# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+# ___license___
 
 # CI for the collection {{ namespace }}.{{ collection_name }}
-
+{% raw %}
 ---
 name: CI
-
 on:  # yamllint disable-line rule:truthy
-
   push:
     branches:
       - '**'
@@ -18,36 +12,20 @@ on:  # yamllint disable-line rule:truthy
       - '*'
   schedule:
     - cron: '40 12 * * 6'
-
   workflow_dispatch:
+    inputs:
+      targeted_branch:
+        description: The name of the target branch on other repositories
+        type: choice
+        options:
+          - dev
+          - prod
 
 jobs:
-
-  CI:
-
-    # don't run on pull request from ourselves
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-
-    env:
-      PY_COLORS: 1
-      ANSIBLE_FORCE_COLOR: 1
-
-    defaults:
-      run:
-        working-directory: ansible_collections/{{ namespace }}/{{ collection_name }}
-
-    steps:
-
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          path: ansible_collections/{{ namespace }}/{{ collection_name }}
-
-      - name: sanity
-        run: |
-          cd ci
-          ansible-test sanity
+  ci:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
+    uses: ./.github/workflows/ci-CI.yml
+    with:
+      targeted_branch: ${{ inputs.targeted_branch }}
+{% endraw %}
 ...

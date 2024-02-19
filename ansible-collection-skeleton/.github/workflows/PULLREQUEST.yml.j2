@@ -1,0 +1,28 @@
+# ___license___
+---
+
+name: Pullrequest
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+
+jobs:
+{% raw %}
+  selectbranch:
+    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
+
+  sanity:
+    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@prod
+    with:
+      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
+    needs: selectbranch
+
+  allsuccess:
+    if: success() || failure()
+    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@prod
+    with:
+      joblist: ${{ toJSON(needs) }}
+    needs:
+      - selectbranch
+      - sanity
+{% endraw %}
+...
