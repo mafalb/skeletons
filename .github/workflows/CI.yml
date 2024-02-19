@@ -4,7 +4,6 @@
 # GNU General Public License v3.0+
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
-
 name: Ci
 on:  # yamllint disable-line rule:truthy
   push:
@@ -14,6 +13,7 @@ on:  # yamllint disable-line rule:truthy
       - '*'
   schedule:
     - cron: '8 10 * * 2'
+  pull_request:
   workflow_dispatch:
     inputs:
       targeted_branch:
@@ -24,34 +24,9 @@ on:  # yamllint disable-line rule:truthy
           - dev
 
 jobs:
-
-  selectbranch:
-    uses: mafalb/workflows/.github/workflows/reusable-selectbranch.yml@prod
-    with:
-      targeted_branch: ${{ inputs.targeted_branch }}
-
-  sanity:
-    uses: mafalb/workflows/.github/workflows/reusable-sanity.yml@prod
-    with:
-      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
-    needs: selectbranch
-
   ci:
+    if: ${{ ! (github.event.pull_request.head.repo.full_name == github.repository) }}
     uses: ./.github/workflows/ci-skeletons.yml
     with:
-      targeted_branch: ${{ needs.selectbranch.outputs.ref }}
-    needs:
-      - selectbranch
-
-  allsuccess:
-    if: |
-      success() || failure() &&
-      ! (github.event.pull_request.head.repo.full_name == github.repository)
-    uses: mafalb/workflows/.github/workflows/reusable-allsuccess.yml@prod
-    with:
-      joblist: ${{ toJSON(needs) }}
-    needs:
-      - selectbranch
-      - sanity
-      - ci
+      targeted_branch: ${{ inputs.targeted_branch }}
 ...
