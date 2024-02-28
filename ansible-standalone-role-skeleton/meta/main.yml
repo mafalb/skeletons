@@ -4,6 +4,7 @@
 ---
 
 galaxy_info:
+  standalone: true
   author: ___author___
   description: your role description
   # company: your company (optional)
@@ -21,7 +22,7 @@ galaxy_info:
   # - CC-BY-4.0
   license: ___licenseshort___
 
-  min_ansible_version: 2.14
+  min_ansible_version: '2.14'
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -50,6 +51,7 @@ galaxy_info:
     - name: Fedora
       versions:
         - "38"
+        - "39"
 
   galaxy_tags: []
 

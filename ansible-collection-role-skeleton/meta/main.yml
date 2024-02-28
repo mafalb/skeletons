@@ -2,6 +2,7 @@
 ---
 
 galaxy_info:
+  standalone: false
   author: ___author___
   description: your role description
   # company: your company (optional)
@@ -41,7 +42,7 @@ galaxy_info:
       versions:
         - focal
         - jammy
-        - noble
+        # - noble
     - name: EL
       versions:
         - "7"
@@ -51,7 +52,7 @@ galaxy_info:
       versions:
         - "38"
         - "39"
-        - "40"
+        # - "40"
 
   galaxy_tags:
     - linux
