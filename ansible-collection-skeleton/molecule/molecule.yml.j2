@@ -22,6 +22,9 @@ provisioner:
   ansible_args:
     - --tags=all,debug
     - --diff
+  env:
+    # pick up CI-only roles
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/molecule/default/roles
   config_options:
     defaults:
       gathering: smart

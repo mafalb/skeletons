@@ -2,7 +2,7 @@
 
 |||
 |---|---|
-|prod|![master branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=prod)|
+|prod|![prod branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=prod)|
 |dev|![dev branch CI](https://github.com/mafalb/skeletons/actions/workflows/CI.yml/badge.svg?branch=dev)|
 
 
