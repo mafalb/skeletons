@@ -16,6 +16,8 @@ platforms:
   - name: ${CI_HOSTNAME}
     image: ${CI_IMAGE}
     dockerfile: ../${CI_DOCKERFILE}
+    extra_opts:
+      ${CI_PODMAN_EXTRA_VARS:-{}}
 
 provisioner:
   name: ansible
